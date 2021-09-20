@@ -1,6 +1,6 @@
 # For Testing Only
 
-[comment]: <> ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/byross/lighthouse-media-library.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/byross/lighthouse-media-library&#41;)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/byross/lighthouse-media-library.svg?style=flat-square)](https://packagist.org/packages/byross/boc-macau-payment)
 
 [comment]: <> (This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.)
 
@@ -9,7 +9,7 @@
 You can install the package via composer:
 
 ```bash
-composer require byross/lighthouse-media-library
+composer require byross/boc-macau-payment
 ```
 
 ```bash
