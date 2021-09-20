@@ -5,25 +5,21 @@
  */
 return [
     'production' => false,
-    'url' => [
-        'uat' => [
-            'transaction' => 'https://cuaas.bocmacau.com/w/rsa/mercapi_ol',
-            'statement' => 'https://cuaam.bocmacau.com/mercweb/rsa/api_ol'
-        ],
-        'prod' => [
-            'transaction' => 'https://aas.bocmacau.com/w/rsa/mercapi_ol',
-            'statement' => 'https://aam.bocmacau.com/mercweb/rsa/api_ol'
-        ],
+    'uat' => [
+        'transaction_url' => 'https://cuaas.bocmacau.com/w/rsa/mercapi_ol',
+        'statement_url' => 'https://cuaam.bocmacau.com/mercweb/rsa/api_ol',
+        'merchant_id' => '',
+        'terminal_no' => '',
+        'platform_public_key' => base_path() . 'platform_public.key',
+        'server_private_key' => base_path() . 'server_private.key'
     ],
-    'fields' => [
-        'uat' => [
-            'merchant_id' => '',
-            'terminal_no' => ''
-        ],
-        'prod' => [
-            'merchant_id' => '',
-            'terminal_no' => ''
-        ],
+    'prod' => [
+        'transaction_url' => 'https://aas.bocmacau.com/w/rsa/mercapi_ol',
+        'statement_url' => 'https://aam.bocmacau.com/mercweb/rsa/api_ol',
+        'merchant_id' => '',
+        'terminal_no' => '',
+        'platform_public_key' => base_path() . 'platform_public.key',
+        'server_private_key' => base_path() . 'server_private.key'
     ],
 
 

@@ -20,16 +20,18 @@ class BOCPaymentServiceProvider extends ServiceProvider
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
+//        php artisan vendor:publish --provider="Byross\BOCPayment\Providers\BOCPaymentServiceProvider" --tag="config"
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../../config/config.php' => config_path('boc-macau-payment.php'),
             ], 'config');
 
-            $this->publishes([
-                __DIR__.'/../../database/migrations/create_media_table.stub' =>
-                    database_path('migrations/' . date('Y_m_d_His', time()) . '_create_lighthouse_media_table.php'),
-                // you can add any number of migrations here
-            ], 'migrations');
+//            $this->publishes([
+//                __DIR__.'/../../database/migrations/create_media_table.stub' =>
+//                    database_path('migrations/' . date('Y_m_d_His', time()) . '_create_lighthouse_media_table.php'),
+//                // you can add any number of migrations here
+//            ], 'migrations');
 
 
             // Publishing the views.

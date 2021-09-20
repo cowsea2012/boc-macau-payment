@@ -1,21 +1,22 @@
 <?php
 namespace Byross\BOCPayment\Classes;
 
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Http;
 
-class BOCClient
+class BOCClient extends Http
 {
     use HasFactory;
 
-    protected $transaction_url;
-    protected $statement_url;
-
-    public $client;
+    public $transaction_url;
+    public $statement_url;
+    public $platform_public_key;
+    public $server_private_key;
 
     protected $env;
 
-    protected $base_fields = [
+    public $base_fields = [
         'requestId' => null,
         'service' => null,
         'version' => '2.0',
@@ -29,19 +30,29 @@ class BOCClient
         $config = config('boc-macau-payment');
         $this->env = $config['production']? 'prod': 'uat';
 
-        $this->transaction_url = $config['url'][ $this->env ]['transaction'];
-        $this->statement_url = $config['url'][ $this->env ]['statement'];
+        $this->transaction_url = $config[ $this->env ]['transaction_url'];
+        $this->statement_url = $config[ $this->env ]['statement_url'];
+        $this->platform_public_key = $config[ $this->env ]['platform_public_key'];
+        $this->server_private_key = $config[ $this->env ]['server_private_key'];
 
         $fields = [
-            'merchantId' => $config['fields'][ $this->env ]['merchant_id'],
-            'terminalNo' => $config['fields'][ $this->env ]['terminal_no'],
+            'merchantId' => $config[ $this->env ]['merchant_id'],
+            'terminalNo' => $config[ $this->env ]['terminal_no'],
         ];
         $this->base_fields = array_merge($this->base_fields, $fields);
 
-        $this->client = Http::withHeaders([
+//        $this->config
+//        $this->client = Http::withHeaders([
+//            'Content-Type' => 'application/json',
+//            'Accept' => 'application/json'
+//        ]);
+
+
+        self::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json'
         ]);
+//        parent::__construct($config);
     }
 
     public function getTransactionUrl(){
@@ -51,26 +62,6 @@ class BOCClient
         return $this->statement_url;
     }
 
-    public function withSignature($data){
-        ksort($data);
-        $data_string = '';
-        foreach ($data as $key => $value){
-            if ($value && !empty($value) && $key != 'merchantSign'){
-                $data_string .= $value;
-            }
-        }
-        $private_key = openssl_get_privatekey(file_get_contents(base_path() . '/bochook.key'));
-        openssl_sign($data_string, $signature, $private_key, OPENSSL_ALGO_SHA256);
-        openssl_free_key($private_key);
 
-        $data['merchantSign'] = base64_encode($signature);
-        foreach ($data as $key => $value){
-            if ($value && !empty($value)){
-                $data[$key] = urlencode($value);
-            }
-        }
-
-        return $data;
-    }
 
 }

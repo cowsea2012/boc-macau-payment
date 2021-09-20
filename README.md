@@ -1,10 +1,8 @@
-# Very short description of the package
+# For Testing Only
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/byross/lighthouse-media-library.svg?style=flat-square)](https://packagist.org/packages/byross/lighthouse-media-library)
-[![Total Downloads](https://img.shields.io/packagist/dt/byross/lighthouse-media-library.svg?style=flat-square)](https://packagist.org/packages/byross/lighthouse-media-library)
-![GitHub Actions](https://github.com/byross/lighthouse-media-library/actions/workflows/main.yml/badge.svg)
+[comment]: <> ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/byross/lighthouse-media-library.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/byross/lighthouse-media-library&#41;)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+[comment]: <> (This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.)
 
 ## Installation
 
@@ -16,42 +14,48 @@ composer require byross/lighthouse-media-library
 
 ```bash
 #publish migrations
-php artisan vendor:publish --provider="Byross\LighthouseMediaLibrary\Providers\LighthouseMediaLibraryServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Byross\BOCPayment\Providers\BOCPaymentServiceProvider" --tag="config"
 
 ```
-## Usage
 
-```php
-// Usage description here
-```
+[comment]: <> (## Usage)
 
-### Testing
+[comment]: <> (```php)
 
-```bash
-composer test
-```
+[comment]: <> (// Usage description here)
 
-### Changelog
+[comment]: <> (```)
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+[comment]: <> (### Testing)
 
-## Contributing
+[comment]: <> (```bash)
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+[comment]: <> (composer test)
 
-### Security
+[comment]: <> (```)
 
-If you discover any security related issues, please email cowsea2012@gmail.com instead of using the issue tracker.
+[comment]: <> (### Changelog)
 
-## Credits
+[comment]: <> (Please see [CHANGELOG]&#40;CHANGELOG.md&#41; for more information what has changed recently.)
 
--   [Ken](https://github.com/byross)
--   [All Contributors](../../contributors)
+[comment]: <> (## Contributing)
 
-## License
+[comment]: <> (Please see [CONTRIBUTING]&#40;CONTRIBUTING.md&#41; for details.)
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+[comment]: <> (### Security)
 
-## Laravel Package Boilerplate
+[comment]: <> (If you discover any security related issues, please email cowsea2012@gmail.com instead of using the issue tracker.)
 
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
+[comment]: <> (## Credits)
+
+[comment]: <> (-   [Ken]&#40;https://github.com/byross&#41;)
+
+[comment]: <> (-   [All Contributors]&#40;../../contributors&#41;)
+
+[comment]: <> (## License)
+
+[comment]: <> (The MIT License &#40;MIT&#41;. Please see [License File]&#40;LICENSE.md&#41; for more information.)
+
+[comment]: <> (## Laravel Package Boilerplate)
+
+[comment]: <> (This package was generated using the [Laravel Package Boilerplate]&#40;https://laravelpackageboilerplate.com&#41;.)

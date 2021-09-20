@@ -14,6 +14,6 @@ class BOCPayment extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'lighthouse-media-library';
+        return 'boc-macau-payment';
     }
 }
