@@ -30,7 +30,7 @@ class BOCPay
         'terminalNo' => null,
     ];
 
-    public function __construct(){
+    public function __construct($terminal_type = 'online'){
         $config = config('boc-macau-payment');
         $this->env = $config['production']? 'prod': 'uat';
 
@@ -41,7 +41,7 @@ class BOCPay
 
         $fields = [
             'merchantId' => $config[ $this->env ]['merchant_id'],
-            'terminalNo' => $config[ $this->env ]['terminal_no'],
+            'terminalNo' => $config[ $this->env ]['terminal_no'][$terminal_type],
         ];
         $this->base_fields = array_merge($this->base_fields, $fields);
 
