@@ -5,6 +5,7 @@
  */
 return [
     'production' => false,
+    'log_channel' => false,
     'uat' => [
         'transaction_url' => 'https://cuaas.bocmacau.com/w/rsa/mercapi_ol',
         'statement_url' => 'https://cuaam.bocmacau.com/mercweb/rsa/api_ol',

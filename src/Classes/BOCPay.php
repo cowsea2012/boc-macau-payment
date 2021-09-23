@@ -6,6 +6,7 @@ use Byross\BOCPayment\Exceptions\BOCKeyPairException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 
 class BOCPay
@@ -20,6 +21,8 @@ class BOCPay
 
     protected $env;
 
+    public $log_channel = null;
+
     protected $base_fields = [
         'requestId' => null,
         'service' => null,
@@ -33,6 +36,7 @@ class BOCPay
     public function __construct($terminal_type = 'online'){
         $config = config('boc-macau-payment');
         $this->env = $config['production']? 'prod': 'uat';
+        $this->log_channel = $config['log_channel'];
 
         $this->transaction_url = $config[ $this->env ]['transaction_url'];
         $this->statement_url = $config[ $this->env ]['statement_url'];
@@ -69,14 +73,14 @@ class BOCPay
                 $data_string .= $value;
             }
         }
-        dump($data_string);
+
         $private_key_path = $this->server_private_key;
         $private_key = openssl_get_privatekey(file_get_contents($private_key_path));
         openssl_sign($data_string, $signature, $private_key, OPENSSL_ALGO_SHA256);
         openssl_free_key($private_key);
 
         $data['merchantSign'] = base64_encode($signature);
-        dump($data['merchantSign']);
+
         foreach ($data as $key => $value){
             if ($value && !empty($value)){
                 $data[$key] = urlencode($value);
@@ -98,17 +102,13 @@ class BOCPay
             }
         }
 
-        dump($data_string);
-        dump($data['serverSign']);
         $pub_key_path = $this->platform_public_key;
         $public_key = openssl_get_publickey(file_get_contents($pub_key_path));
         $verified = openssl_verify($data_string, $signature, $public_key, OPENSSL_ALGO_SHA256);
         openssl_free_key($public_key);
 
         if (!$verified){
-            dump('fail');
-//            throw new BOCKeyPairException('Public Key Error');
-
+            throw new BOCKeyPairException('Invalid Server Signature');
         }
 
         return $verified;
@@ -129,9 +129,12 @@ class BOCPay
 
         $data = $this->withSignature($data);
 
+        $this->log('info', $data);
+
         $response = $this->client->post($this->transaction_url, $data);
 
-//        Log::info($response->getBody());
+        $this->log('info', $response->getBody());
+
         $body = json_decode(urldecode($response->getBody()), true);
 
         $this->checkExceptions($body);
@@ -144,8 +147,7 @@ class BOCPay
             $this->verifySignature($body);
         }
 
-
-//        $body = Arr::except($body, ['version', 'signType', 'serverSign']);
+        $body = Arr::except($body, ['version', 'signType', 'serverSign']);
 
         return $body;
     }
@@ -158,12 +160,14 @@ class BOCPay
         $data = array_merge($this->base_fields, $data, $input_array);
         $data = $this->withSignature($data);
 
-//        Log::info($data);
-        dump($data);
+        $this->log('info', $data);
+
         $response = $this->client->post($this->transaction_url, $data);
-//        Log::error($response->getBody());
+
+        $this->log('info', $response->getBody());
+
         $body = json_decode(urldecode($response->getBody()), true);
-        dump($body);
+
         $this->checkExceptions($body);
 
         if (!isset($body['result'])){
@@ -174,10 +178,11 @@ class BOCPay
             $this->verifySignature($body);
         }
 
-//        $body = Arr::except($body, ['version', 'signType', 'serverSign']);
+        $body = Arr::except($body, ['version', 'signType', 'serverSign']);
 
         return $body;
     }
+
     public function orderRefund($input_array, $verify_boc_sign = true){
         $data = [
             'service' => 'OrderRefund',
@@ -187,10 +192,15 @@ class BOCPay
         ];
         $data = array_merge($this->base_fields, $data, $input_array);
         $data = $this->withSignature($data);
-        dump($data);
+
+        $this->log('info', $data);
+
         $response = $this->client->post($this->transaction_url, $data);
+
+        $this->log('info', $response->getBody());
+
         $body = json_decode(urldecode($response->getBody()), true);
-        dump($body);
+
         $this->checkExceptions($body);
 
         if (!isset($body['result'])){
@@ -200,6 +210,17 @@ class BOCPay
         if ($verify_boc_sign){
             $this->verifySignature($body);
         }
+
+        $body = Arr::except($body, ['version', 'signType', 'serverSign']);
+
         return $body;
     }
+
+    public function log($level, $message){
+        if ($this->log_channel){
+            Log::channel($this->log_channel)->$level($message);
+        }
+    }
+
+
 }
