@@ -74,12 +74,15 @@ class BOCPay
             }
         }
 
+        $this->log('info', $data_string);
+
         $private_key_path = $this->server_private_key;
         $private_key = openssl_get_privatekey(file_get_contents($private_key_path));
         openssl_sign($data_string, $signature, $private_key, OPENSSL_ALGO_SHA256);
         openssl_free_key($private_key);
 
         $data['merchantSign'] = base64_encode($signature);
+        $this->log('info', $data['merchantSign']);
 
         foreach ($data as $key => $value){
             if ($value && !empty($value)){
@@ -101,13 +104,16 @@ class BOCPay
                 $data_string .= urldecode($value);
             }
         }
+        $this->log('info', $data_string);
 
         $pub_key_path = $this->platform_public_key;
         $public_key = openssl_get_publickey(file_get_contents($pub_key_path));
         $verified = openssl_verify($data_string, $signature, $public_key, OPENSSL_ALGO_SHA256);
         openssl_free_key($public_key);
 
+        $this->log('info', $signature);
         if (!$verified){
+            $this->log('error', 'Invalid Server Signature');
             throw new BOCKeyPairException('Invalid Server Signature');
         }
 
