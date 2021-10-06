@@ -111,7 +111,7 @@ class BOCPay
         $verified = openssl_verify($data_string, $signature, $public_key, OPENSSL_ALGO_SHA256);
         openssl_free_key($public_key);
 
-        $this->log('info', $signature);
+        $this->log('info', $data['serverSign']);
         if (!$verified){
             $this->log('error', 'Invalid Server Signature');
             throw new BOCKeyPairException('Invalid Server Signature');
