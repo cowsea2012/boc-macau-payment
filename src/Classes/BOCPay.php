@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 
 class BOCPay
@@ -129,7 +130,8 @@ class BOCPay
             'notifyUrl' => 'api',
             'referUrl' => 'api',
             'businessType' => '4',
-            'validNumber' => null
+            'validNumber' => null,
+            'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
         ];
         $data = array_merge($this->base_fields, $data, $input_array);
 
@@ -162,6 +164,7 @@ class BOCPay
         $data = [
             'service' => 'OrderQuery',
             'queryLogNo' => '',
+            'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
         ];
         $data = array_merge($this->base_fields, $data, $input_array);
         $data = $this->withSignature($data);
@@ -195,6 +198,7 @@ class BOCPay
             'logNo' => '',
             'refundOrderNo' => '',
             'refundAmount' => null,
+            'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
         ];
         $data = array_merge($this->base_fields, $data, $input_array);
         $data = $this->withSignature($data);

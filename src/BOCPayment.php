@@ -15,6 +15,10 @@ class BOCPayment
         $this->boc = new BOCPay();
     }
 
+    public function verifySignature($data){
+        return $this->boc->verifySignature($data);
+    }
+
     public function postCreateBocCashier($input_array, $verify_boc_sign = true){
         return $this->boc->createBocCashier($input_array, $verify_boc_sign);
     }
