@@ -3,7 +3,12 @@
 namespace Byross\BOCPayment\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use phpDocumentor\Reflection\Types\Boolean;
 
+
+/**
+ * @method static Boolean verifySignature(array $data = null)
+ */
 
 class BOCPayment extends Facade
 {
