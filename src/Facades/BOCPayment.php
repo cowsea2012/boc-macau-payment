@@ -12,6 +12,13 @@ class BOCPayment extends Facade
      *
      * @return string
      */
+    const ORDER_SUCCESS = 'S';
+    const ORDER_FAILED = 'F';
+    const ORDER_PENDING = 'A';
+    const ORDER_UNKNOWN = 'Z';
+    const ORDER_REFUNDING = 'W';
+    const ORDER_REVOKED = 'D';
+
     protected static function getFacadeAccessor()
     {
         return 'boc-macau-payment';
