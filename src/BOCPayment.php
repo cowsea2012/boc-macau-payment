@@ -9,6 +9,13 @@ class BOCPayment
 {
     public $boc;
 
+    public const ORDER_SUCCESS = 'S';
+    public const ORDER_FAILED = 'F';
+    public const ORDER_PENDING = 'A';
+    public const ORDER_UNKNOWN = 'Z';
+    public const ORDER_REFUNDING = 'W';
+    public const ORDER_REVOKED = 'D';
+
     // Build your next great package.
     public function __construct(){
         $this->boc = new BOCPay();
