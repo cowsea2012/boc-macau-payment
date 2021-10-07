@@ -8,6 +8,13 @@ use Illuminate\Support\Arr;
 class BOCPayment
 {
     public $boc;
+
+    const ORDER_SUCCESS = 'S';
+    const ORDER_FAILED = 'F';
+    const ORDER_PENDING = 'A';
+    const ORDER_UNKNOWN = 'Z';
+    const ORDER_REFUNDING = 'W';
+    const ORDER_REVOKED = 'D';
     // Build your next great package.
     public function __construct(){
         $this->boc = new BOCPay();
