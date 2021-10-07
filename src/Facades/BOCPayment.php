@@ -12,12 +12,12 @@ class BOCPayment extends Facade
      *
      * @return string
      */
-    const ORDER_SUCCESS = 'S';
-    const ORDER_FAILED = 'F';
-    const ORDER_PENDING = 'A';
-    const ORDER_UNKNOWN = 'Z';
-    const ORDER_REFUNDING = 'W';
-    const ORDER_REVOKED = 'D';
+    public const ORDER_SUCCESS = 'S';
+    public const ORDER_FAILED = 'F';
+    public const ORDER_PENDING = 'A';
+    public const ORDER_UNKNOWN = 'Z';
+    public const ORDER_REFUNDING = 'W';
+    public const ORDER_REVOKED = 'D';
 
     protected static function getFacadeAccessor()
     {
