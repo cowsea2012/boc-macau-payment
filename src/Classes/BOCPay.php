@@ -163,7 +163,7 @@ class BOCPay
     public function orderQuery($input_array, $verify_boc_sign = true){
         $data = [
             'service' => 'OrderQuery',
-            'queryLogNo' => '',
+            'queryLogNo' => null,
             'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
         ];
         $data = array_merge($this->base_fields, $data, $input_array);
@@ -195,8 +195,8 @@ class BOCPay
     public function orderRefund($input_array, $verify_boc_sign = true){
         $data = [
             'service' => 'OrderRefund',
-            'logNo' => '',
-            'refundOrderNo' => '',
+            'logNo' => null,
+            'refundOrderNo' => null,
             'refundAmount' => null,
             'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
         ];
