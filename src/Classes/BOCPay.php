@@ -195,9 +195,6 @@ class BOCPay
     public function orderRefund($input_array, $verify_boc_sign = true){
         $data = [
             'service' => 'OrderRefund',
-            'logNo' => null,
-            'refundOrderNo' => null,
-            'refundAmount' => null,
             'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
         ];
         $data = array_merge($this->base_fields, $data, $input_array);
