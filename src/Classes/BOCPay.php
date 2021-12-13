@@ -52,7 +52,8 @@ class BOCPay
 
         $this->client = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
+            'User-Agent' => ''
         ]);
 
     }
