@@ -268,6 +268,7 @@ class BOCPay
         ];
 
         $data = array_merge($this->base_fields, $data, $input_array);
+        $data = $this->withSignature($data);
 
         $request = new Request('POST', $this->transaction_url,
             [
@@ -278,6 +279,8 @@ class BOCPay
             [
                 'json' => $data
             ]);
+
+        return $request;
 
     }
 
