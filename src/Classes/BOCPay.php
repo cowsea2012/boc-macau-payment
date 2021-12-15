@@ -3,6 +3,8 @@ namespace Byross\BOCPayment\Classes;
 
 use Byross\BOCPayment\Exceptions\BOCMaintainingException;
 use Byross\BOCPayment\Exceptions\BOCKeyPairException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -15,10 +17,13 @@ class BOCPay
     use HasFactory;
 
     protected $client;
+
+    protected $base_url;
     protected $transaction_url;
     protected $statement_url;
     protected $platform_public_key;
     protected $server_private_key;
+
 
     protected $env;
 
@@ -39,6 +44,7 @@ class BOCPay
         $this->env = $config['production']? 'prod': 'uat';
         $this->log_channel = $config['log_channel'];
 
+        $this->base_url = $config[ $this->env ]['base_url'];
         $this->transaction_url = $config[ $this->env ]['transaction_url'];
         $this->statement_url = $config[ $this->env ]['statement_url'];
         $this->platform_public_key = $config[ $this->env ]['platform_public_key'];
@@ -50,11 +56,21 @@ class BOCPay
         ];
         $this->base_fields = array_merge($this->base_fields, $fields);
 
-        $this->client = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-            'User-Agent' => ''
+        $this->client = new Client([
+            'base_uri' =>  $config[ $this->env ]['base_url'],
+            'timeout' =>  6.0,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'User-Agent' => ''
+            ]
         ]);
+
+//        $this->client = Http::withHeaders([
+//            'Content-Type' => 'application/json',
+//            'Accept' => 'application/json',
+//            'User-Agent' => ''
+//        ]);
 
     }
 
@@ -140,7 +156,9 @@ class BOCPay
 
         $this->log('info', $data);
 
-        $response = $this->client->post($this->transaction_url, $data);
+        $response = $this->client->post($this->transaction_url, [
+            'json' => $data
+        ]);
 
         $this->log('info', $response->getBody());
 
@@ -172,7 +190,9 @@ class BOCPay
 
         $this->log('info', $data);
 
-        $response = $this->client->post($this->transaction_url, $data);
+        $response = $this->client->post($this->transaction_url, [
+            'json' => $data
+        ]);
 
         $this->log('info', $response->getBody());
 
@@ -228,6 +248,37 @@ class BOCPay
         if ($this->log_channel){
             Log::channel($this->log_channel)->$level($message);
         }
+    }
+
+
+    public function getOrderQueryNewRequest($input_array, $verify_boc_sign = true){
+//        $client = new Client([
+//            'base_uri' =>  $this->base_url,
+//            'timeout' =>  6.0,
+//            'headers' => [
+//                'Content-Type' => 'application/json',
+//                'Accept' => 'application/json',
+//                'User-Agent' => ''
+//            ]
+//        ]);
+        $data = [
+            'service' => 'OrderQuery',
+            'queryLogNo' => null,
+            'requestId' => time() . Str::padLeft(rand(1, 99999), 5, '0')
+        ];
+
+        $data = array_merge($this->base_fields, $data, $input_array);
+
+        $request = new Request('POST', $this->transaction_url,
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'User-Agent' => ''
+            ],
+            [
+                'json' => $data
+            ]);
+
     }
 
 
