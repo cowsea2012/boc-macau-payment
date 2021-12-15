@@ -276,9 +276,8 @@ class BOCPay
                 'Accept' => 'application/json',
                 'User-Agent' => ''
             ],
-            [
-                'json' => json_encode($data)
-            ]);
+            json_encode($data)
+        );
 
         return $request;
 
