@@ -31,8 +31,8 @@ class BOCPayment
         return $this->boc->orderRefund($input_array, $verify_boc_sign);
     }
 
-    public function getOrderQueryNewRequest($input_array, $verify_boc_sign = true){
-        return $this->boc->getOrderQueryNewRequest($input_array, $verify_boc_sign);
+    public function getOrderQueryAsync($input_array, $verify_boc_sign = true){
+        return $this->boc->getOrderQueryAsync($input_array, $verify_boc_sign);
     }
 
 }

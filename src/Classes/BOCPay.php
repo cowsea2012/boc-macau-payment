@@ -251,16 +251,7 @@ class BOCPay
     }
 
 
-    public function getOrderQueryNewRequest($input_array, $verify_boc_sign = true){
-//        $client = new Client([
-//            'base_uri' =>  $this->base_url,
-//            'timeout' =>  6.0,
-//            'headers' => [
-//                'Content-Type' => 'application/json',
-//                'Accept' => 'application/json',
-//                'User-Agent' => ''
-//            ]
-//        ]);
+    public function getOrderQueryAsync($input_array, $verify_boc_sign = true){
         $data = [
             'service' => 'OrderQuery',
             'queryLogNo' => null,
@@ -270,16 +261,20 @@ class BOCPay
         $data = array_merge($this->base_fields, $data, $input_array);
         $data = $this->withSignature($data);
 
-        $request = new Request('POST', Str::substr($this->base_url, 0, -1) .  $this->transaction_url,
-            [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-                'User-Agent' => ''
-            ],
-            json_encode($data)
-        );
+        return $this->client->postAsync($this->transaction_url, [
+            'json' => $data
+        ]);
 
-        return $request;
+//        $request = new Request('POST', Str::substr($this->base_url, 0, -1) .  $this->transaction_url,
+//            [
+//                'Content-Type' => 'application/json',
+//                'Accept' => 'application/json',
+//                'User-Agent' => ''
+//            ],
+//            json_encode($data)
+//        );
+//
+//        return $request;
 
     }
 
